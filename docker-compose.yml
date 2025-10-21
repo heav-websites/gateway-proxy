@@ -1,0 +1,66 @@
+services:
+  traefik:
+    image: traefik:v3.4
+    container_name: traefik
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+
+    networks:
+      - gatewayproxy
+
+    ports:
+      - "80:80"
+      - "8080:8080"
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+    command:
+      # EntryPoints
+      - "--entrypoints.web.address=:80"
+
+      # Providers 
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.network=gatewayproxy"
+
+      # API & Dashboard 
+      - "--api.dashboard=true"
+
+      # Observability 
+      - "--log.level=INFO"
+      - "--accesslog=true"
+      # - "--metrics.prometheus=true"
+
+  # Traefik Dynamic configuration via Docker labels
+    labels:
+      # Enable self‑routing
+      - "traefik.enable=true"
+
+      # Dashboard router
+      - "traefik.http.routers.dashboard.rule=Host(`dashboard.docker.localhost`)"
+      - "traefik.http.routers.dashboard.entrypoints=web"
+      - "traefik.http.routers.dashboard.service=api@internal"
+      - "traefik.http.routers.dashboard.tls=false"
+
+      # Basic‑auth middleware
+      - "traefik.http.middlewares.dashboard-auth.basicauth.users=admin:$$apr1$$zCwsd.Uv$$pJmTRUxEUAhS80DEf2Sm7."
+      - "traefik.http.routers.dashboard.middlewares=dashboard-auth@docker"
+
+# Whoami application
+  whoami:
+    image: traefik/whoami
+    container_name: whoami
+    restart: unless-stopped
+    networks:
+      - gatewayproxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`whoami.docker.localhost`)"
+      - "traefik.http.routers.whoami.entrypoints=web"
+
+networks:
+  gatewayproxy:
+    name: gatewayproxy
+    external: true
