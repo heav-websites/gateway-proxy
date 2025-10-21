@@ -33,7 +33,7 @@ services:
       - "--accesslog=true"
       # - "--metrics.prometheus=true"
 
-  # Traefik Dynamic configuration via Docker labels
+    # Traefik Dynamic configuration via Docker labels
     labels:
       # Enable self‑routing
       - "traefik.enable=true"
@@ -47,18 +47,6 @@ services:
       # Basic‑auth middleware
       - "traefik.http.middlewares.dashboard-auth.basicauth.users=admin:$$apr1$$zCwsd.Uv$$pJmTRUxEUAhS80DEf2Sm7."
       - "traefik.http.routers.dashboard.middlewares=dashboard-auth@docker"
-
-# Whoami application
-  whoami:
-    image: traefik/whoami
-    container_name: whoami
-    restart: unless-stopped
-    networks:
-      - gatewayproxy
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.whoami.rule=Host(`whoami.docker.localhost`)"
-      - "traefik.http.routers.whoami.entrypoints=web"
 
 networks:
   gatewayproxy:
