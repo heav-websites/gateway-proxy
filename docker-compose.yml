@@ -8,10 +8,8 @@ services:
 
     networks:
       - gatewayproxy
-
     ports:
       - "80:80"
-
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
@@ -38,12 +36,12 @@ services:
       - "traefik.enable=true"
 
       # Dashboard router
-      - "traefik.http.routers.dashboard.rule=Host(`dashboard.docker.localhost`)"
+      - "traefik.http.routers.dashboard.rule=Host(`${DASHBOARD_HOST}`)"
       - "traefik.http.routers.dashboard.entrypoints=web"
       - "traefik.http.routers.dashboard.service=api@internal"
 
       # Basic‑auth middleware
-      - "traefik.http.middlewares.dashboard-auth.basicauth.users=admin:$$apr1$$zCwsd.Uv$$pJmTRUxEUAhS80DEf2Sm7."
+      - "traefik.http.middlewares.dashboard-auth.basicauth.users=${DASHBOARD_AUTH}"
       - "traefik.http.routers.dashboard.middlewares=dashboard-auth@docker"
 
 networks:
