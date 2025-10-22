@@ -44,6 +44,17 @@ services:
       - "traefik.http.middlewares.dashboard-auth.basicauth.users=${DASHBOARD_AUTH}"
       - "traefik.http.routers.dashboard.middlewares=dashboard-auth@docker"
 
+  whoami:
+    image: traefik/whoami
+    container_name: whoami
+    restart: unless-stopped
+    networks:
+      - gatewayproxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`${WHOAMI_HOST:-whoami.heav.fr}`)"
+      - "traefik.http.routers.whoami.entrypoints=web"
+
 networks:
   gatewayproxy:
     name: gatewayproxy
