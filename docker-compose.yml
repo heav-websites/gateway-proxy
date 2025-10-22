@@ -61,6 +61,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.whoami.rule=Host(`${WHOAMI_HOST:-whoami.heav.fr}`)"
       - "traefik.http.routers.whoami.entrypoints=web"
+      - "traefik.http.routers.whoami.middlewares=my-cloudflarewarp@docker"
 
 networks:
   gatewayproxy:
