@@ -22,6 +22,10 @@ services:
       - "--providers.docker.exposedbydefault=false"
       - "--providers.docker.network=gatewayproxy"
 
+      # Cloudflare real ip plugin
+      - "--experimental.plugins.cloudflarewarp.modulename=github.com/BetterCorp/cloudflarewarp"
+      - "--experimental.plugins.cloudflarewarp.version=v1.3.3"
+
       # API & Dashboard 
       - "--api.dashboard=true"
 
