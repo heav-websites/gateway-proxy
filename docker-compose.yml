@@ -60,7 +60,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.prometheus.rule=Host(`${PROMETHEUS_HOST}`)"
       - "traefik.http.routers.prometheus.entrypoints=web"
-      - "traefik.http.routers.prometheus.middlewares=my-cloudflarewarp@docker"
+      - "traefik.http.routers.prometheus.middlewares=my-cloudflarewarp@docker,dashboard-auth@docker"
 
       - "prometheus.scrape=true"
       - "prometheus.port=9090"
