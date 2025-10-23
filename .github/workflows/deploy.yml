@@ -12,6 +12,11 @@ jobs:
       COMPOSE_PROJECT_NAME: "${{ vars.DOCKER_PROJECT }}"
 
       # Docker compose's args
+      GRAFANA_HOST: ${{ vars.GRAFANA_HOST }}
+      GRAFANA_SERVER_ROOT_URL: ${{ vars.GRAFANA_SERVER_ROOT_URL }}
+
+      PROMETHEUS_HOST: ${{ vars.PROMETHEUS_HOST }}
+
       PUBLIC_PORT: ${{ vars.PUBLIC_PORT }}
       DASHBOARD_HOST: ${{ vars.DASHBOARD_HOST }}
       DASHBOARD_AUTH: ${{ secrets.DASHBOARD_AUTH }}
