@@ -86,7 +86,7 @@ services:
       - "traefik.http.routers.grafana.middlewares=my-cloudflarewarp@docker"
 
   traefik:
-    image: traefik:v3.4
+    image: traefik:v3.6
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
